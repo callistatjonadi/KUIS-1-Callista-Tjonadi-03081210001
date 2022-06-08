@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class AplikasiPerbankan {
     public static void main(String[] args) throws Exception {
         ArrayList<Akun> listNasabah = new ArrayList<Akun>();
-        Akun nasabah1 = new Akun("Siti", "0213456", 1000000);
+        Akun nasabah1 = new Akun("Susi", "0213456", 1000000);
         Akun nasabah2 = new Akun("Budi", "0314865", 500000);
         listNasabah.add(nasabah1);
         listNasabah.add(nasabah2);
