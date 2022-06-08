@@ -19,24 +19,44 @@ public class AplikasiPerbankan {
         do{
             cetakMenu();
             pilihan = keyboard.nextInt();
+            keyboard.nextLine();
 
             if (pilihan == 1){
-                System.out.print("Masukkan nominal yang ingin ditarik: ");
-                int uang = keyboard.nextInt();
-                
-                if (listNasabah.get(0).Transfer(uang)) {
-                    Mutasi berita = new Mutasi(uang, "Debit");
-                    beritaAcara.add(berita);
-                    System.out.print("Nomor rekening yang dituju: ");
-                    String nomorRekening =  keyboard.next();
-                    if(nomorRekening.equals(listNasabah.get(1).nomorRekening)){
-                        listNasabah.get(1).Credit(uang);
-                        System.out.println("Transaksi berhasil.");
-                    }
-                    else{
-                        System.out.println("Nomor Rekening yang Anda tuju tidak tersedia.");
-                    }
+                boolean nomorRekTersedia = false;
+                System.out.print("Masukkan nomor rekening Anda: ");
+                String nomorRek = keyboard.nextLine();
+                for (Akun akun : listNasabah) {
+                    if (akun.nomorRekening.equalsIgnoreCase(nomorRek)){
+                        nomorRekTersedia = true;
+                        System.out.print("Masukkan nominal yang ingin ditarik: ");
+                        int uang = keyboard.nextInt();
+                        keyboard.nextLine();
+                        
+                        if (akun.Transfer(uang)) {
+                            boolean nomorRekTujuanTersedia = false;
+                            Mutasi berita = new Mutasi(uang, "Debit");
+                            beritaAcara.add(berita);
+                            System.out.print("Nomor rekening yang dituju: ");
+                            String nomorRekening =  keyboard.nextLine();
+                            for (Akun akunTujuan : listNasabah) {
+                                if(nomorRekening.equalsIgnoreCase(akunTujuan.nomorRekening)){
+                                    nomorRekTujuanTersedia = true;
+                                    akunTujuan.Credit(uang);
+                                    System.out.println("Transaksi berhasil.");
+                                    break;
+                                }
+                            }
+                            if (!nomorRekTujuanTersedia) {
+                                System.out.println("Nomor Rekening yang Anda tuju tidak tersedia.");    
+                            }
+                        }
+                        break;
+                    } 
                 }
+                if (!nomorRekTersedia) {
+                    System.out.println("Nomor Rekening yang Anda masukkan tidak terdaftar.");
+                }
+                
             }
 
             else if (pilihan == 2){
